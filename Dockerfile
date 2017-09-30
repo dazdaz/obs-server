@@ -1,12 +1,13 @@
-# This Dockerfile is used to build an headles vnc image based on Ubuntu
+# This Dockerfile is used to build an headless Ubuntu with OBS
 
 FROM ubuntu:16.04
 
 MAINTAINER potsky <potsky@me.com>
 
-LABEL io.k8s.description="Headless OBS Container with VNC, XFCE Window Manager, Chromium, GIT" \
+LABEL io.k8s.description="Headless OBS Container with OBS, VNC, XFCE Window Manager, Chromium, GIT" \
       io.k8s.display-name="Headless OBS Container based on Ubuntu 16"
 
+### Env
 ENV HOME=/root
 ENV TERM=xterm
 ENV STARTUPDIR=$HOME/startup
@@ -23,10 +24,8 @@ ENV NO_VNC_PORT=6901
 ENV SSH_PORT=22
 ENV VERSION_GIT=2.14.1
 
-# Open ports
+### Docker config
 EXPOSE $SSH_PORT $VNC_PORT $NO_VNC_PORT
-
-### Envrionment config
 WORKDIR $HOME
 
 ### Add install scripts
@@ -37,7 +36,7 @@ RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 RUN $INST_SCRIPTS/tools.sh
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-### Install xvnc-server & noVNC - HTML5 based VNC viewer
+### Install softwares
 RUN $INST_SCRIPTS/tigervnc.sh
 RUN $INST_SCRIPTS/no_vnc.sh
 RUN $INST_SCRIPTS/chrome.sh
@@ -46,14 +45,14 @@ RUN $INST_SCRIPTS/git.sh
 RUN $INST_SCRIPTS/system.sh
 RUN $INST_SCRIPTS/obs.sh
 
+### Copy assets
 ADD ./runtime/xfce/ $HOME/
 ADD ./runtime/system/vimrc /root/.vimrc
 ADD ./runtime/system/motd /etc/motd
 
-### configure startup
+### Startup
 RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./runtime/scripts $STARTUPDIR
 RUN find $STARTUPDIR -name '*.sh' -exec chmod a+x {} +
-###RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
 CMD [ "/root/startup/run.sh" ]
