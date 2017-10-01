@@ -41,8 +41,8 @@ RUN $INST_SCRIPTS/tigervnc.sh
 RUN $INST_SCRIPTS/no_vnc.sh
 RUN $INST_SCRIPTS/chrome.sh
 RUN $INST_SCRIPTS/xfce_ui.sh
-RUN $INST_SCRIPTS/git.sh
 RUN $INST_SCRIPTS/system.sh
+RUN $INST_SCRIPTS/drivers.sh
 RUN $INST_SCRIPTS/obs.sh
 
 ### Copy assets
@@ -51,7 +51,7 @@ ADD ./runtime/system/vimrc /root/.vimrc
 ADD ./runtime/system/motd /etc/motd
 
 ### Startup
-RUN $INST_SCRIPTS/libnss_wrapper.sh
+##RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./runtime/scripts $STARTUPDIR
 RUN find $STARTUPDIR -name '*.sh' -exec chmod a+x {} +
 

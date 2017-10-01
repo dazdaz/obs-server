@@ -20,11 +20,14 @@ apt-get install -y \
 		apt-transport-https \
 		software-properties-common \
 		lsb-release \
+		pciutils \
+		lshw \
 		ca-certificates \
 		gcc \
 		make \
 		libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
 		nodejs \
+		git \
 		xvfb
 
 apt-get clean -y
