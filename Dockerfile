@@ -46,12 +46,11 @@ RUN $INST_SCRIPTS/drivers.sh
 RUN $INST_SCRIPTS/obs.sh
 
 ### Copy assets
-ADD ./runtime/xfce/ $HOME/
+ADD ./runtime/home/ $HOME/
 ADD ./runtime/system/vimrc /root/.vimrc
 ADD ./runtime/system/motd /etc/motd
 
 ### Startup
-##RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./runtime/scripts $STARTUPDIR
 RUN find $STARTUPDIR -name '*.sh' -exec chmod a+x {} +
 
